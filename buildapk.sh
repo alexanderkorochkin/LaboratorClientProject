@@ -40,6 +40,7 @@ then
 	sudo apt install -y $python_version-virtualenv
 	$python_version -m virtualenv $app_name && ceho greely "Successfully created virtual environment ($app_name)!"
 	cd ${DROOT}
+	echo "${app_name}Project/**" > .gitignore
 	ceho greely "First stage of preparing finished! Run script again!"
 fi
 cd ${app_name}Project

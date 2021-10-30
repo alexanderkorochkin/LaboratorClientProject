@@ -35,7 +35,7 @@ buildozer_it ()
 		sudo rm -rf .buildozer
 		yes | buildozer android debug
 	fi
-	ceho colly "......BUILDING COMPLETED......"
+	ceho colly "_____BUILDING COMPLETED_____"
 
 }
 
