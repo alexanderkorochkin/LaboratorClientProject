@@ -1,5 +1,7 @@
 #!/bin/bash
 
+PREV_DIR=$(pwd)
+
 cd $HOME/dev	
 #Need to be in every file, where configuration used
 CFG_FILE=build_config.cfg
@@ -9,6 +11,7 @@ eval "$CFG_CONTENT"
 source $DROOT/git_update.sh
 source $DROOT/ceho.sh
 source $DROOT/buildozer_it.sh
+source $DROOT/adbInstall.sh
 
 VENV_CHECK_VALUE=0
 
@@ -24,7 +27,7 @@ venv_check ()
 	fi
 }
 
-ceho colly "Make requirements file before installation: pip freeze | Out-File -Encoding UTF8 requirements.list" 1s
+ceho colly "You have to make requirements file before installation: pip freeze | Out-File -Encoding UTF8 requirements.list" 1s
 
 #run script by: source BUILD.sh firstly
 ceho greely "Starting..."
@@ -37,8 +40,8 @@ then
 	cd ${app_name}Project
 	ceho colly "Working on VENV..."
 	sudo apt update
-	sudo apt install -y $python_version-virtualenv
-	$python_version -m virtualenv $app_name && ceho greely "Successfully created virtual environment ($app_name)!"
+	sudo apt install -y python3.9-virtualenv
+	python3 -m virtualenv $app_name && ceho greely "Successfully created virtual environment ($app_name)!"
 	cd ${DROOT}
 	echo "${app_name}Project/**" > .gitignore
 	ceho greely "First stage of preparing finished! Run script again!"
@@ -52,9 +55,9 @@ then
 	then
 		sudo apt update
 		sudo apt install -y curl
-		sudo apt install -y ${python_version}-distutils
+		sudo apt install -y python3-distutils
 		sudo curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-		$python_version get-pip.py
+		python3 get-pip.py
 			
 		ceho colly "Installing and upgrading SDL2 dependencies..."
 		# Dependencies with SDL2
@@ -63,8 +66,8 @@ then
     			python-pip \
     			build-essential \
     			git \
-    			python3 \
-			python3-dev \
+    			python3.9 \
+			python3.9-dev \
     			ffmpeg \
     			libsdl2-dev \
     			libsdl2-image-dev \
@@ -83,7 +86,7 @@ then
 		sudo pacman -S --noconfirm base-devel python ffmpeg sdl2 sdl2_image sdl2_mixer sdl2_ttf portmidi zlib
 	else
 		sudo curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-		$python_version get-pip.py
+		python3 get-pip.py
 	fi
 
 	# Dependencies Buildozer
@@ -100,8 +103,8 @@ then
     			libpangox-1.0-0:i386 \
     			libpangoxft-1.0-0:i386 \
     			libidn11:i386 \
-    			python2.7 \
-    			python2.7-dev \
+    			python3.9 \
+    			python3.9-dev \
     			openjdk-8-jdk \
     			unzip \
     			zlib1g-dev \
@@ -143,11 +146,11 @@ fi
 
 if ! [ -d ./buildozer ]; then
 	ceho colly "Installing and upgrading Cython and Kivy..."
-	pip3 install --upgrade cython kivy && ceho greely "Cython and Kivy is good!"
+	pip3 install --upgrade cython ./libs/kivy-xoo && ceho greely "Cython and Kivy is good!"
 	ceho colly "Installing Buildozer..."
 	git clone https://github.com/kivy/buildozer.git
 	cd buildozer || return 1
-	$python_version setup.py install
+	python3 setup.py install
 	ceho greely "Buildozer is good!"
 	cd ..
 fi
@@ -166,6 +169,11 @@ sed -i "s/#android.permissions = .*/android.permissions = $android_permissions/"
 sed -i "s/version = .*/version = $app_version/" buildozer.spec
 sed -i "s/android.arch = .*/android.arch = $app_arch/" buildozer.spec
 sed -i "s/#p4a.branch = .*/p4a.branch = master/" buildozer.spec
+sed -i "s/orientation = .*/orientation = $orientation/" buildozer.spec
+sed -i "s/source.include_exts = .*/source.include_exts = $source_include_exts/" buildozer.spec
+sed -i "s/fullscreen = .*/fullscreen = $fullscreen/" buildozer.spec
+sed -i "s/# android.skip_update = .*/android.skip_update = True/" buildozer.spec
+sed -i "s/# requirements.source.kivy = .*/requirements.source.kivy = $pathtokivy/" buildozer.spec
 
 ceho colly "Generating requirements from requirements.list file..."
 requirements=''
@@ -173,7 +181,8 @@ isFirst=true
 sed -i '1s/^\xEF\xBB\xBF//' requirements.list
 while IFS= read -r line
 do
-  	if [ "${line:0:4}" != "kivy" ] && [ "${line:0:4}" != "Kivy" ] && [ "${line:0:8}" != "pypiwin3" ] && [ "${line:0:7}" != "pywin32" ];
+  	
+	if [ "${line:0:8}" != "pypiwin3" ] && [ "${line:0:7}" != "pywin32" ];
 	then
 		if $isFirst
 		then
@@ -208,4 +217,8 @@ fi
 
 cd $DROOT/${app_name}Project/bin
 ceho greely "___BUILD SUCCESSFULLY DONE___"
+
+cd $PREV_DIR
+
+eval "./adbInstall.sh -run"
 
