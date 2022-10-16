@@ -10,6 +10,10 @@ source ceho.sh
 buildozer_it ()
 {
 	cd ./${app_name}
+	
+	ceho colly "Do not forget to activate VPN!"
+	
+	
 	ceho colly "BUILDING WITH BUILDOZER..."
 	if ! [ -d /.buildozer ];
 	then
