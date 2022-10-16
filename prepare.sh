@@ -13,7 +13,7 @@ ceho colly "You have to make requirements file before installation: pip freeze |
 
 ceho greely "Starting..."
 
-cd ./${app_name}
+cd ${app_name}
 ceho colly "Working at buildozer.spec file..."
 rm -f buildozer.spec
 buildozer init
@@ -31,6 +31,8 @@ sed -i "s/fullscreen = .*/fullscreen = $fullscreen/" buildozer.spec
 sed -i "s/# android.skip_update = .*/android.skip_update = False/" buildozer.spec
 sed -i "s/osx.kivy_version = .*/osx.kivy_version = 2.2.0/" buildozer.spec
 sed -i "s/osx.python_version = .*/osx.python_version = 3.8/" buildozer.spec
+sed -i "s/# version.regex/version.regex/" buildozer.spec
+sed -i "s/# version.filename/version.filename/" buildozer.spec
 
 ceho colly "Generating requirements from requirements.list file..."
 requirements=''
