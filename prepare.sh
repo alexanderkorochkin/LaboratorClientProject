@@ -22,7 +22,7 @@ sed -i "s/title = .*/title = $app_name/" buildozer.spec
 sed -i "s/package.name = .*/package.name = $package_name/" buildozer.spec
 sed -i "s/package.domain = .*/package.domain = $package_domain/" buildozer.spec
 sed -i "s/#android.permissions = .*/android.permissions = $android_permissions/" buildozer.spec
-sed -i "s/version = .*/version = $app_version/" buildozer.spec
+#sed -i "s/version = .*/version = $app_version/" buildozer.spec
 sed -i "s/android.arch = .*/android.arch = $app_arch/" buildozer.spec
 sed -i "s/#p4a.branch = .*/p4a.branch = master/" buildozer.spec
 sed -i "s/orientation = .*/orientation = $orientation/" buildozer.spec
