@@ -15,8 +15,13 @@ ceho greely "Starting..."
 
 cd ${app_name}
 ceho colly "Working at buildozer.spec file..."
-rm -f buildozer.spec
-buildozer init
+FILE=buildozer.spec
+if [ -f "$FILE" ]; then
+    rm -f buildozer.spec
+	buildozer init
+else 
+    buildozer init
+fi
 
 sed -i "s/title = .*/title = $app_name/" buildozer.spec
 sed -i "s/package.name = .*/package.name = $package_name/" buildozer.spec
