@@ -34,8 +34,6 @@ sed -i "s/orientation = .*/orientation = $orientation/" buildozer.spec
 sed -i "s/source.include_exts = .*/source.include_exts = $source_include_exts/" buildozer.spec
 sed -i "s/fullscreen = .*/fullscreen = $fullscreen/" buildozer.spec
 sed -i "s/# android.skip_update = .*/android.skip_update = False/" buildozer.spec
-sed -i "s/osx.kivy_version = .*/osx.kivy_version = 2.2.0/" buildozer.spec
-sed -i "s/osx.python_version = .*/osx.python_version = 3.8/" buildozer.spec
 sed -i "s/# version.regex/version.regex/" buildozer.spec
 sed -i "s/# version.filename/version.filename/" buildozer.spec
 
