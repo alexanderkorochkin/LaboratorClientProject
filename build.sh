@@ -1,34 +1,25 @@
 #!/bin/bash
 
-#Need to be in every file, where configuration used
-CFG_FILE=build_config.cfg
-CFG_CONTENT=$(cat $CFG_FILE | sed -r '/[^=]+=[^=]+/!d' | sed -r 's/\s+=\s/=/g')
-eval "$CFG_CONTENT"
-
-source ceho.sh
-
 buildozer_it ()
 {
-	cd ./${app_name}
-	
 	ceho colly "Do not forget to activate VPN!"
-	
-	
-	ceho colly "BUILDING WITH BUILDOZER..."
-	if ! [ -d /.buildozer ];
+	ceho greely "_____BUILDING WITH BUILDOZER_____"
+
+	if ! [ -e .buildozer ];
 	then
 		ceho colly "Folder .buildozer not found! It looks like this assembly is the first. Run..."		
 		yes | buildozer android debug
 	else
-		ceho colly "Folder .buildozer already exists! Run..."	
+		ceho colly "Folder .buildozer already exists! Delete and run..."	
 		sudo rm -rf .buildozer
 		yes | buildozer android debug
 	fi
-	ceho colly "_____BUILDING COMPLETED_____"
+	ceho greely "_____BUILDING COMPLETED_____"
 }
 
-if [ $# -eq 1 ]; then
+if [ $# -eq 2 ]; then
 	if [ $1 == "-run" ]; then
+		cd $2/${app_name}
 		buildozer_it
 	fi
 fi
