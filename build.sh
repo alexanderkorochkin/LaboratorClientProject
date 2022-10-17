@@ -11,7 +11,7 @@ buildozer_it ()
 		yes | buildozer android debug
 	else
 		ceho colly "Folder .buildozer already exists! Delete and run..."	
-		sudo rm -rf .buildozer
+		#sudo rm -rf .buildozer
 		yes | buildozer android debug
 	fi
 	ceho greely "_____BUILDING COMPLETED_____"

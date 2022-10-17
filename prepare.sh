@@ -9,11 +9,13 @@ eval "$CFG_CONTENT"
 
 source ceho.sh
 
-ceho colly "NOTICE: You have to make requirements file before installation: pip freeze | Out-File -Encoding UTF8 requirements.list" 1s
+ceho colly "Pulling Git of ${app_name}..."
+cd ${app_name}
+git pull
 
+ceho colly "NOTICE: You have to make requirements file before installation: pip freeze | Out-File -Encoding UTF8 requirements.list" 1s
 ceho greely "_____STARTING PREPARE_____"
 
-cd ${app_name}
 ceho colly "Working at buildozer.spec file..."
 FILE=buildozer.spec
 if [ -f "$FILE" ]; then
