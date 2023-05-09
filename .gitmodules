@@ -1,0 +1,4 @@
+[submodule "LaboratorClient"]
+	path = LaboratorClient
+	url = https://github.com/alexanderkorochkin/LaboratorClient.git
+	branch = master
